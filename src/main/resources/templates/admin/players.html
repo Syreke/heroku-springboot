@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Игроки</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"  media="screen"/>
+</head>
+<body>
+<div class="container">
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <h1>Добавить игрока</h1>
+                <form class="needs-validation" novalidate th:action="@{/admin/addplayer}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <select multiple class="form-control" name="clubIId" required>
+                            <option th:each="club : ${clubs}"
+                                    th:value="${club.clubId}"
+                                    th:text="${club.fullName}">Club</option>
+                        </select>
+                        <div class="invalid-feedback">Выберите один клуб</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="firstName" required/>
+                        <div class="invalid-feedback">Введите имя игрока</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="lastName" required/>
+                        <div class="invalid-feedback">Введите фамилию игрока</div>
+                    </div>
+                    <button type="submit" class="btn btn-default" id="submit">Добавить игрока</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <h1>Игроки</h1>
+
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Игрок</th>
+                        <th>Клуб</th>
+                        <th>Действие</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="player : ${players}">
+                        <td th:text="${player.playerId}"></td>
+                        <td th:text="${player.firstName + ' ' + player.lastName}"></td>
+                        <td th:text="${player.club.fullName}"></td>
+                        <td> <a th:href = "@{'/admin/remove?id='+${player.playerId}}"><button class="btn btn-outline=danger">Удалить</button></a><td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/jquery.js" type="application/javascript"></script>
+<script src="/bootstrap.min.js" type="application/javascript"></script>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+</body>
+</html>
